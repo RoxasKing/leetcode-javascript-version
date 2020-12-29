@@ -8,7 +8,7 @@ describe('minCostClimbingStairs()', () => {
   ]
 
   tests.forEach((test) => {
-    it(`minCostClimbingStairs(${test.args}) === ${test.expected}`, () => {
+    it(`minCostClimbingStairs([${test.args}]) === ${test.expected}`, () => {
       assert.deepStrictEqual(minCostClimbingStairs(test.args), test.expected)
     })
   })
