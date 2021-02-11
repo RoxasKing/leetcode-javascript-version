@@ -50,8 +50,8 @@ var medianSlidingWindow = function (nums, k) {
 
 class MidHeap {
   _mark = new Map()
-  _maxh = new PriorityQueue((a, b) => { return a > b ? true : false })
-  _minh = new PriorityQueue((a, b) => { return a < b ? true : false })
+  _maxh = new PriorityQueue((a, b) => a > b ? true : false)
+  _minh = new PriorityQueue((a, b) => a < b ? true : false)
   _maxd = 0
   _mind = 0
 
