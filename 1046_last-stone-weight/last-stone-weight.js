@@ -31,74 +31,74 @@
  * @return {number}
  */
 var lastStoneWeight = function (stones) {
-  let pq = new PriorityQueue()
-  for (let stone of stones) {
-    pq.push(stone)
-  }
-
-  while (pq.size() > 1) {
-    let a = pq.pop()
-    let b = pq.pop()
-    if (a != b) {
-      pq.push(Math.abs(a - b))
+    let pq = new PriorityQueue()
+    for (let stone of stones) {
+        pq.push(stone)
     }
-  }
 
-  if (pq.size() == 0) {
-    return 0
-  }
-  return pq.pop()
+    while (pq.size() > 1) {
+        let a = pq.pop()
+        let b = pq.pop()
+        if (a != b) {
+            pq.push(Math.abs(a - b))
+        }
+    }
+
+    if (pq.size() == 0) {
+        return 0
+    }
+    return pq.pop()
 }
 
 class PriorityQueue {
-  _queue = []
+    _queue = []
 
-  push(x) {
-    this._queue.push(+x)
-    this._up()
-  }
-
-  pop() {
-    let last = this.size() - 1;
-    [this._queue[0], this._queue[last]] = [this._queue[last], this._queue[0]]
-    let out = this._queue.pop()
-    this._down()
-    return out
-  }
-
-  size() {
-    return this._queue.length
-  }
-
-  _up() {
-    let son = this.size() - 1
-    while (son > 0) {
-      let parent = (son - 1) >> 1
-      if (this._queue[parent] >= this._queue[son]) {
-        return
-      }
-      [this._queue[parent], this._queue[son]] = [this._queue[son], this._queue[parent]]
-      son = parent
+    push(x) {
+        this._queue.push(+x)
+        this._up()
     }
-  }
 
-  _down() {
-    let parent = 0
-    while (parent < (this.size() >> 1)) {
-      let son = (parent << 1) + 1
-      if (son > this.size() - 1) {
-        return
-      }
-      if (son + 1 < this.size() && this._queue[son + 1] > this._queue[son]) {
-        son++
-      }
-      if (this._queue[son] <= this._queue[parent]) {
-        return
-      }
-      [this._queue[parent], this._queue[son]] = [this._queue[son], this._queue[parent]]
-      parent = son
+    pop() {
+        let last = this.size() - 1;
+        [this._queue[0], this._queue[last]] = [this._queue[last], this._queue[0]]
+        let out = this._queue.pop()
+        this._down()
+        return out
     }
-  }
+
+    size() {
+        return this._queue.length
+    }
+
+    _up() {
+        let son = this.size() - 1
+        while (son > 0) {
+            let parent = (son - 1) >> 1
+            if (this._queue[parent] >= this._queue[son]) {
+                return
+            }
+            [this._queue[parent], this._queue[son]] = [this._queue[son], this._queue[parent]]
+            son = parent
+        }
+    }
+
+    _down() {
+        let parent = 0
+        while (parent < (this.size() >> 1)) {
+            let son = (parent << 1) + 1
+            if (son > this.size() - 1) {
+                return
+            }
+            if (son + 1 < this.size() && this._queue[son + 1] > this._queue[son]) {
+                son++
+            }
+            if (this._queue[son] <= this._queue[parent]) {
+                return
+            }
+            [this._queue[parent], this._queue[son]] = [this._queue[son], this._queue[parent]]
+            parent = son
+        }
+    }
 }
 
 export { lastStoneWeight }

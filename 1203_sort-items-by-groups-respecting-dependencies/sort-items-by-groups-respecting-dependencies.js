@@ -40,165 +40,165 @@
  * @return {number[]}
  */
 var sortItems = function (n, m, group, beforeItems) {
-  let itemEdges = new Map()
-  let itemIndeg = new Array(n).fill(0)
+    let itemEdges = new Map()
+    let itemIndeg = new Array(n).fill(0)
 
-  let groupDepends = new Map()
-  let groupEdges = new Map()
-  let groupIndeg = new Array(m).fill(0)
+    let groupDepends = new Map()
+    let groupEdges = new Map()
+    let groupIndeg = new Array(m).fill(0)
 
-  for (let i = 0; i < beforeItems.length; i++) {
-    for (let j of beforeItems[i]) {
-      if (!itemEdges.has(j)) {
-        itemEdges.set(j, [])
-      }
-      itemEdges.get(j).push(i)
-      itemIndeg[i]++
+    for (let i = 0; i < beforeItems.length; i++) {
+        for (let j of beforeItems[i]) {
+            if (!itemEdges.has(j)) {
+                itemEdges.set(j, [])
+            }
+            itemEdges.get(j).push(i)
+            itemIndeg[i]++
 
-      let groupI = group[i]
-      let groupJ = group[j]
-      if (groupI === -1 || groupJ === -1 || groupI == groupJ ||
-        groupDepends.has(groupI) &&
-        groupDepends.get(groupI).has(groupJ) &&
-        groupDepends.get(groupI).get(groupJ)) {
-        continue
-      }
-      if (!groupDepends.has(groupI)) {
-        groupDepends.set(groupI, new Map())
-      }
-      groupDepends.get(groupI).set(groupJ, true)
+            let groupI = group[i]
+            let groupJ = group[j]
+            if (groupI === -1 || groupJ === -1 || groupI == groupJ ||
+                groupDepends.has(groupI) &&
+                groupDepends.get(groupI).has(groupJ) &&
+                groupDepends.get(groupI).get(groupJ)) {
+                continue
+            }
+            if (!groupDepends.has(groupI)) {
+                groupDepends.set(groupI, new Map())
+            }
+            groupDepends.get(groupI).set(groupJ, true)
 
-      if (groupDepends.has(groupJ) &&
-        groupDepends.get(groupJ).has(groupI) &&
-        groupDepends.get(groupJ).get(groupI)) {
+            if (groupDepends.has(groupJ) &&
+                groupDepends.get(groupJ).has(groupI) &&
+                groupDepends.get(groupJ).get(groupI)) {
+                return []
+            }
+
+            if (!groupEdges.has(groupJ)) {
+                groupEdges.set(groupJ, [])
+            }
+            groupEdges.get(groupJ).push(groupI)
+            groupIndeg[groupI]++
+        }
+    }
+
+    let itemQ = []
+    for (let i = 0; i < n; i++) {
+        if (itemIndeg[i] === 0) {
+            itemQ.push(i)
+        }
+    }
+
+    let count = 0
+    let added = new Array(n).fill(false)
+    let groupItemsAll = new Map()
+    let groupBeforeSelf = new Map()
+    let groupBeforeOther = new Map()
+
+    while (itemQ.length > 0) {
+        let i = itemQ.shift()
+        let groupI = group[i]
+        if (count === n) {
+            return []
+        }
+        count++
+        if (groupI !== -1 && !added[i]) {
+            if (!groupItemsAll.has(groupI)) {
+                groupItemsAll.set(groupI, [])
+            }
+            groupItemsAll.get(groupI).push(i)
+        }
+        if (!itemEdges.has(i)) {
+            continue
+        }
+        for (let j of itemEdges.get(i)) {
+            let groupJ = group[j]
+            if (groupJ !== -1) {
+                if (!added[j]) {
+                    if (!groupItemsAll.has(groupJ)) {
+                        groupItemsAll.set(groupJ, [])
+                    }
+                    groupItemsAll.get(groupJ).push(j)
+                }
+                if (added[i]) {
+                    continue
+                }
+                if (group[i] === group[j]) {
+                    if (!groupBeforeSelf.has(groupJ)) {
+                        groupBeforeSelf.set(groupJ, [])
+                    }
+                    groupBeforeSelf.get(groupJ).push(i)
+                } else {
+                    if (!groupBeforeOther.has(groupJ)) {
+                        groupBeforeOther.set(groupJ, [])
+                    }
+                    groupBeforeOther.get(groupJ).push(i)
+                }
+            }
+            itemIndeg[j]--
+            if (itemIndeg[j] === 0) {
+                itemQ.push(j)
+            }
+        }
+    }
+
+    if (count !== n) {
         return []
-      }
+    }
 
-      if (!groupEdges.has(groupJ)) {
-        groupEdges.set(groupJ, [])
-      }
-      groupEdges.get(groupJ).push(groupI)
-      groupIndeg[groupI]++
-    }
-  }
+    let mark = new Array(n).fill(false)
+    let out = []
 
-  let itemQ = []
-  for (let i = 0; i < n; i++) {
-    if (itemIndeg[i] === 0) {
-      itemQ.push(i)
-    }
-  }
-
-  let count = 0
-  let added = new Array(n).fill(false)
-  let groupItemsAll = new Map()
-  let groupBeforeSelf = new Map()
-  let groupBeforeOther = new Map()
-
-  while (itemQ.length > 0) {
-    let i = itemQ.shift()
-    let groupI = group[i]
-    if (count === n) {
-      return []
-    }
-    count++
-    if (groupI !== -1 && !added[i]) {
-      if (!groupItemsAll.has(groupI)) {
-        groupItemsAll.set(groupI, [])
-      }
-      groupItemsAll.get(groupI).push(i)
-    }
-    if (!itemEdges.has(i)) {
-      continue
-    }
-    for (let j of itemEdges.get(i)) {
-      let groupJ = group[j]
-      if (groupJ !== -1) {
-        if (!added[j]) {
-          if (!groupItemsAll.has(groupJ)) {
-            groupItemsAll.set(groupJ, [])
-          }
-          groupItemsAll.get(groupJ).push(j)
-        }
-        if (added[i]) {
-          continue
-        }
-        if (group[i] === group[j]) {
-          if (!groupBeforeSelf.has(groupJ)) {
-            groupBeforeSelf.set(groupJ, [])
-          }
-          groupBeforeSelf.get(groupJ).push(i)
-        } else {
-          if (!groupBeforeOther.has(groupJ)) {
-            groupBeforeOther.set(groupJ, [])
-          }
-          groupBeforeOther.get(groupJ).push(i)
-        }
-      }
-      itemIndeg[j]--
-      if (itemIndeg[j] === 0) {
-        itemQ.push(j)
-      }
-    }
-  }
-
-  if (count !== n) {
-    return []
-  }
-
-  let mark = new Array(n).fill(false)
-  let out = []
-
-  let groupQ = []
-  for (let g = 0; g < m; g++) {
-    if (groupIndeg[g] === 0) {
-      groupQ.push(g)
-    }
-  }
-
-  while (groupQ.length > 0) {
-    let groupIdx = groupQ.shift()
-    if (groupBeforeOther.has(groupIdx)) {
-      for (let i of groupBeforeOther.get(groupIdx)) {
-        if (!mark[i]) {
-          out.push(i)
-          mark[i] = true
-        }
-      }
-    }
-    if (groupBeforeSelf.has(groupIdx)) {
-      for (let i of groupBeforeSelf.get(groupIdx)) {
-        if (!mark[i]) {
-          out.push(i)
-          mark[i] = true
-        }
-      }
-    }
-    if (groupItemsAll.has(groupIdx)) {
-      for (let i of groupItemsAll.get(groupIdx)) {
-        if (!mark[i]) {
-          out.push(i)
-          mark[i] = true
-        }
-      }
-    }
-    if (groupEdges.has(groupIdx)) {
-      for (let g of groupEdges.get(groupIdx)) {
-        groupIndeg[g]--
+    let groupQ = []
+    for (let g = 0; g < m; g++) {
         if (groupIndeg[g] === 0) {
-          groupQ.push(g)
+            groupQ.push(g)
         }
-      }
     }
-  }
 
-  for (let i = 0; i < n; i++) {
-    if (!mark[i]) {
-      out.push(i)
+    while (groupQ.length > 0) {
+        let groupIdx = groupQ.shift()
+        if (groupBeforeOther.has(groupIdx)) {
+            for (let i of groupBeforeOther.get(groupIdx)) {
+                if (!mark[i]) {
+                    out.push(i)
+                    mark[i] = true
+                }
+            }
+        }
+        if (groupBeforeSelf.has(groupIdx)) {
+            for (let i of groupBeforeSelf.get(groupIdx)) {
+                if (!mark[i]) {
+                    out.push(i)
+                    mark[i] = true
+                }
+            }
+        }
+        if (groupItemsAll.has(groupIdx)) {
+            for (let i of groupItemsAll.get(groupIdx)) {
+                if (!mark[i]) {
+                    out.push(i)
+                    mark[i] = true
+                }
+            }
+        }
+        if (groupEdges.has(groupIdx)) {
+            for (let g of groupEdges.get(groupIdx)) {
+                groupIndeg[g]--
+                if (groupIndeg[g] === 0) {
+                    groupQ.push(g)
+                }
+            }
+        }
     }
-  }
 
-  return out
+    for (let i = 0; i < n; i++) {
+        if (!mark[i]) {
+            out.push(i)
+        }
+    }
+
+    return out
 }
 
 export { sortItems }

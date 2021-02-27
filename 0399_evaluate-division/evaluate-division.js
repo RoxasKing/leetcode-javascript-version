@@ -43,43 +43,43 @@
  * @return {number[]}
  */
 var calcEquation = function (equations, values, queries) {
-  let dict = new Map()
-  for (let i in equations) {
-    if (!dict.has(equations[i][0])) {
-      dict.set(equations[i][0], [])
+    let dict = new Map()
+    for (let i in equations) {
+        if (!dict.has(equations[i][0])) {
+            dict.set(equations[i][0], [])
+        }
+        dict.get(equations[i][0]).push([equations[i][1], values[i]])
+        if (!dict.has(equations[i][1])) {
+            dict.set(equations[i][1], [])
+        }
+        dict.get(equations[i][1]).push([equations[i][0], 1 / values[i]])
     }
-    dict.get(equations[i][0]).push([equations[i][1], values[i]])
-    if (!dict.has(equations[i][1])) {
-      dict.set(equations[i][1], [])
+    let out = []
+    for (let query of queries) {
+        out.push(search(dict, new Map(), query, 1))
     }
-    dict.get(equations[i][1]).push([equations[i][0], 1 / values[i]])
-  }
-  let out = []
-  for (let query of queries) {
-    out.push(search(dict, new Map(), query, 1))
-  }
-  return out
+    return out
 }
 
 let search = (dict, walked, query, temp) => {
-  if (!dict.has(query[0])) {
+    if (!dict.has(query[0])) {
+        return -1.0
+    }
+    walked.set(query[0], true)
+    for (let end of dict.get(query[0])) {
+        if (end[0] == query[1]) {
+            return temp * end[1]
+        }
+        if (walked.get(end[0])) {
+            continue
+        }
+        let ret = search(dict, walked, [end[0], query[1]], temp * end[1])
+        if (ret != -1.0) {
+            return ret
+        }
+    }
+    walked.set(query[0], false)
     return -1.0
-  }
-  walked.set(query[0], true)
-  for (let end of dict.get(query[0])) {
-    if (end[0] == query[1]) {
-      return temp * end[1]
-    }
-    if (walked.get(end[0])) {
-      continue
-    }
-    let ret = search(dict, walked, [end[0], query[1]], temp * end[1])
-    if (ret != -1.0) {
-      return ret
-    }
-  }
-  walked.set(query[0], false)
-  return -1.0
 }
 
 export { calcEquation }

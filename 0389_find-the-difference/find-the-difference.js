@@ -36,26 +36,26 @@
  * @return {character}
  */
 var findTheDifference = function (s, t) {
-  let count = new Map()
-  for (let i = 0; i < s.length; i++) {
-    let key = s.charAt(i)
-    if (count.has(key)) {
-      count.set(key, count.get(key) + 1)
-    } else {
-      count.set(key, 1)
+    let count = new Map()
+    for (let i = 0; i < s.length; i++) {
+        let key = s.charAt(i)
+        if (count.has(key)) {
+            count.set(key, count.get(key) + 1)
+        } else {
+            count.set(key, 1)
+        }
     }
-  }
-  for (let i = 0; i < t.length; i++) {
-    let key = t.charAt(i)
-    if (!count.has(key)) {
-      return key
+    for (let i = 0; i < t.length; i++) {
+        let key = t.charAt(i)
+        if (!count.has(key)) {
+            return key
+        }
+        let value = count.get(key) - 1
+        if (value < 0) {
+            return key
+        }
+        count.set(key, value)
     }
-    let value = count.get(key) - 1
-    if (value < 0) {
-      return key
-    }
-    count.set(key, value)
-  }
 }
 
 export { findTheDifference }

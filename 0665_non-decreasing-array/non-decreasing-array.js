@@ -27,26 +27,26 @@
  * @return {boolean}
  */
 var checkPossibility = function (nums) {
-  let n = nums.length
-  let changed = false
-  for (let i = 0; i < n - 1; i++) {
-    if (nums[i] > nums[i + 1]) {
-      if (changed) {
-        return false
-      }
-      if (i - 1 >= 0) {
-        if (nums[i + 1] >= nums[i - 1]) {
-          nums[i] = nums[i - 1]
-        } else {
-          nums[i + 1] = nums[i]
+    let n = nums.length
+    let changed = false
+    for (let i = 0; i < n - 1; i++) {
+        if (nums[i] > nums[i + 1]) {
+            if (changed) {
+                return false
+            }
+            if (i - 1 >= 0) {
+                if (nums[i + 1] >= nums[i - 1]) {
+                    nums[i] = nums[i - 1]
+                } else {
+                    nums[i + 1] = nums[i]
+                }
+            } else {
+                nums[i] = nums[i + 1]
+            }
+            changed = true
         }
-      } else {
-        nums[i] = nums[i + 1]
-      }
-      changed = true
     }
-  }
-  return true
+    return true
 }
 
 export { checkPossibility }

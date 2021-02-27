@@ -30,32 +30,32 @@
  * @return {number}
  */
 var maxProfit = function (k, prices) {
-  if (k === 0 || prices.length < 2) {
-    return 0
-  } else if (k >= prices.length >> 1) {
-    return maxProfitWithNoLimit(prices)
-  }
-  let dp = []
-  for (let i = 0; i <= k; i++) {
-    dp[i] = [-Infinity, 0]
-  }
-  for (let price of prices) {
-    for (let i = 1; i <= k; i++) {
-      dp[i][0] = Math.max(dp[i][0], dp[i - 1][1] - price)
-      dp[i][1] = Math.max(dp[i][1], dp[i][0] + price)
+    if (k === 0 || prices.length < 2) {
+        return 0
+    } else if (k >= prices.length >> 1) {
+        return maxProfitWithNoLimit(prices)
     }
-  }
-  return dp[k][1]
+    let dp = []
+    for (let i = 0; i <= k; i++) {
+        dp[i] = [-Infinity, 0]
+    }
+    for (let price of prices) {
+        for (let i = 1; i <= k; i++) {
+            dp[i][0] = Math.max(dp[i][0], dp[i - 1][1] - price)
+            dp[i][1] = Math.max(dp[i][1], dp[i][0] + price)
+        }
+    }
+    return dp[k][1]
 }
 
 let maxProfitWithNoLimit = (prices) => {
-  let buy = -Infinity, sell = 0
-  for (let price of prices) {
-    let preBuy = buy
-    buy = Math.max(buy, sell - price)
-    sell = Math.max(sell, preBuy + price)
-  }
-  return sell
+    let buy = -Infinity, sell = 0
+    for (let price of prices) {
+        let preBuy = buy
+        buy = Math.max(buy, sell - price)
+        sell = Math.max(sell, preBuy + price)
+    }
+    return sell
 }
 
 export { maxProfit }

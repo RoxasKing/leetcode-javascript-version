@@ -42,56 +42,56 @@
  * @return {number[]}
  */
 var findRedundantConnection = function (edges) {
-  let n = edges.length
-  let uf = new unionFind(n)
-  for (let edge of edges) {
-    let ancestorX = uf.find(edge[0])
-    let ancestorY = uf.find(edge[1])
+    let n = edges.length
+    let uf = new unionFind(n)
+    for (let edge of edges) {
+        let ancestorX = uf.find(edge[0])
+        let ancestorY = uf.find(edge[1])
 
-    if (ancestorX !== ancestorY) {
-      uf.union(ancestorX, ancestorY)
-    } else {
-      return edge
+        if (ancestorX !== ancestorY) {
+            uf.union(ancestorX, ancestorY)
+        } else {
+            return edge
+        }
     }
-  }
-  return null
+    return null
 }
 
 class unionFind {
-  ancestor = []
-  isEnd = []
+    ancestor = []
+    isEnd = []
 
-  constructor(n) {
-    for (let i = 0; i < n; i++) {
-      this.ancestor.push(i)
-      this.isEnd.push(false)
-    }
-  }
-
-  find(x) {
-    if (this.isEnd[this.ancestor[x]]) {
-      return this.ancestor[x]
+    constructor(n) {
+        for (let i = 0; i < n; i++) {
+            this.ancestor.push(i)
+            this.isEnd.push(false)
+        }
     }
 
-    if (this.ancestor[x] !== x) {
-      this.ancestor[x] = this.find(this.ancestor[x])
+    find(x) {
+        if (this.isEnd[this.ancestor[x]]) {
+            return this.ancestor[x]
+        }
 
-      this.isEnd[x] = false
-      this.isEnd[this.ancestor[x]] = true
+        if (this.ancestor[x] !== x) {
+            this.ancestor[x] = this.find(this.ancestor[x])
+
+            this.isEnd[x] = false
+            this.isEnd[this.ancestor[x]] = true
+        }
+
+        return this.ancestor[x]
     }
 
-    return this.ancestor[x]
-  }
+    union(x, y) {
+        let ancestorX = this.find(x)
+        let ancestorY = this.find(y)
 
-  union(x, y) {
-    let ancestorX = this.find(x)
-    let ancestorY = this.find(y)
+        this.ancestor[ancestorX] = ancestorY
 
-    this.ancestor[ancestorX] = ancestorY
-
-    this.isEnd[ancestorX] = false
-    this.isEnd[ancestorY] = true
-  }
+        this.isEnd[ancestorX] = false
+        this.isEnd[ancestorY] = true
+    }
 }
 
 export { findRedundantConnection }

@@ -1,12 +1,12 @@
 {
-  "name": "leetcode-javascript-version",
-  "version": "1.0.0",
-  "license": "MIT",
-  "type": "module",
-  "scripts": {
-    "test": "mocha"
-  },
-  "devDependencies": {
-    "mocha": "^8.2.1"
-  }
+    "name": "leetcode-javascript-version",
+    "version": "1.0.0",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "test": "mocha"
+    },
+    "devDependencies": {
+        "mocha": "^8.2.1"
+    }
 }

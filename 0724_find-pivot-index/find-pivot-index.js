@@ -30,22 +30,22 @@
  * @return {number}
  */
 var pivotIndex = function (nums) {
-  let n = nums.length
-  if (n === 0) { return -1 }
+    let n = nums.length
+    if (n === 0) { return -1 }
 
-  let sumR = new Array(n).fill(0)
-  sumR[n - 1] = nums[n - 1]
-  for (let i = n - 2; i >= 0; i--) {
-    sumR[i] = sumR[i + 1] + nums[i]
-  }
+    let sumR = new Array(n).fill(0)
+    sumR[n - 1] = nums[n - 1]
+    for (let i = n - 2; i >= 0; i--) {
+        sumR[i] = sumR[i + 1] + nums[i]
+    }
 
-  let sum = 0
-  for (let i = 0; i < n; i++) {
-    sum += nums[i]
-    if (sum === sumR[i]) { return i }
-  }
+    let sum = 0
+    for (let i = 0; i < n; i++) {
+        sum += nums[i]
+        if (sum === sumR[i]) { return i }
+    }
 
-  return -1
+    return -1
 }
 
 export { pivotIndex }

@@ -46,16 +46,16 @@
  * @return {number}
  */
 var maxScore = function (cardPoints, k) {
-  let n = cardPoints.length
-  let sum = 0
-  for (let i = n - k; i < n; i++) { sum += cardPoints[i] }
-  let out = sum
-  for (let i = 0; i < k; i++) {
-    sum += cardPoints[i]
-    sum -= cardPoints[i - k + n]
-    out = Math.max(out, sum)
-  }
-  return out
+    let n = cardPoints.length
+    let sum = 0
+    for (let i = n - k; i < n; i++) { sum += cardPoints[i] }
+    let out = sum
+    for (let i = 0; i < k; i++) {
+        sum += cardPoints[i]
+        sum -= cardPoints[i - k + n]
+        out = Math.max(out, sum)
+    }
+    return out
 }
 
 export { maxScore }

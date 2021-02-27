@@ -36,27 +36,27 @@
  * @return {number}
  */
 var characterReplacement = function (s, k) {
-  let out = 0
-  let count = new Map()
-  let l = 0
-  for (let r = 0; r < s.length; r++) {
-    let c = s.charAt(r)
-    if (!count.has(c)) {
-      count.set(c, 0)
+    let out = 0
+    let count = new Map()
+    let l = 0
+    for (let r = 0; r < s.length; r++) {
+        let c = s.charAt(r)
+        if (!count.has(c)) {
+            count.set(c, 0)
+        }
+        count.set(c, count.get(c) + 1)
+        let max = 0
+        for (let cnt of count.values()) {
+            max = Math.max(max, cnt)
+        }
+        if (max + k < r + 1 - l) {
+            count.set(s.charAt(l), count.get(s.charAt(l)) - 1)
+            l++
+        } else {
+            out = Math.max(out, r + 1 - l)
+        }
     }
-    count.set(c, count.get(c) + 1)
-    let max = 0
-    for (let cnt of count.values()) {
-      max = Math.max(max, cnt)
-    }
-    if (max + k < r + 1 - l) {
-      count.set(s.charAt(l), count.get(s.charAt(l)) - 1)
-      l++
-    } else {
-      out = Math.max(out, r + 1 - l)
-    }
-  }
-  return out
+    return out
 }
 
 export { characterReplacement }

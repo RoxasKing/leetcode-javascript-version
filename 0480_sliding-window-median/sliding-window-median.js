@@ -38,127 +38,127 @@
  * @return {number[]}
  */
 var medianSlidingWindow = function (nums, k) {
-  let out = []
-  let midh = new MidHeap()
-  for (let i = 0; i < nums.length; i++) {
-    midh.push(nums[i])
-    if (i > k - 1) { midh.erase(nums[i - k]) }
-    if (i >= k - 1) { out.push(midh.getmid()) }
-  }
-  return out
+    let out = []
+    let midh = new MidHeap()
+    for (let i = 0; i < nums.length; i++) {
+        midh.push(nums[i])
+        if (i > k - 1) { midh.erase(nums[i - k]) }
+        if (i >= k - 1) { out.push(midh.getmid()) }
+    }
+    return out
 }
 
 class MidHeap {
-  _mark = new Map()
-  _maxh = new PriorityQueue((a, b) => a > b ? true : false)
-  _minh = new PriorityQueue((a, b) => a < b ? true : false)
-  _maxd = 0
-  _mind = 0
+    _mark = new Map()
+    _maxh = new PriorityQueue((a, b) => a > b ? true : false)
+    _minh = new PriorityQueue((a, b) => a < b ? true : false)
+    _maxd = 0
+    _mind = 0
 
-  getmid() {
-    if (((this._maxh.size() - this._maxd + this._minh.size() - this._mind) & 1) === 1) {
-      return this._maxh.top()
+    getmid() {
+        if (((this._maxh.size() - this._maxd + this._minh.size() - this._mind) & 1) === 1) {
+            return this._maxh.top()
+        }
+        return (this._maxh.top() + this._minh.top()) / 2.0
     }
-    return (this._maxh.top() + this._minh.top()) / 2.0
-  }
 
-  push(x) {
-    if (this._maxh.size() == 0 || x <= this._maxh.top()) {
-      this._maxh.push(x)
-    } else {
-      this._minh.push(x)
+    push(x) {
+        if (this._maxh.size() == 0 || x <= this._maxh.top()) {
+            this._maxh.push(x)
+        } else {
+            this._minh.push(x)
+        }
+        this._balance()
     }
-    this._balance()
-  }
 
-  erase(x) {
-    if (!this._mark.has(x)) { this._mark.set(x, 0) }
-    this._mark.set(x, this._mark.get(x) + 1)
-    if (x <= this._maxh.top()) {
-      this._maxd++
-    } else {
-      this._mind++
+    erase(x) {
+        if (!this._mark.has(x)) { this._mark.set(x, 0) }
+        this._mark.set(x, this._mark.get(x) + 1)
+        if (x <= this._maxh.top()) {
+            this._maxd++
+        } else {
+            this._mind++
+        }
+        this._balance()
     }
-    this._balance()
-  }
 
-  _balance() {
-    while (true) {
-      while (this._maxh.size() > 0 && this._mark.get(this._maxh.top()) > 0) {
-        this._mark.set(this._maxh.top(), this._mark.get(this._maxh.top()) - 1)
-        this._maxd--
-        this._maxh.pop()
-      }
-      while (this._minh.size() > 0 && this._mark.get(this._minh.top()) > 0) {
-        this._mark.set(this._minh.top(), this._mark.get(this._minh.top()) - 1)
-        this._mind--
-        this._minh.pop()
-      }
-      if (this._maxh.size() - this._maxd < this._minh.size() - this._mind) {
-        this._maxh.push(this._minh.pop())
-      } else if (this._maxh.size() - this._maxd > this._minh.size() - this._mind + 1) {
-        this._minh.push(this._maxh.pop())
-      } else {
-        return
-      }
+    _balance() {
+        while (true) {
+            while (this._maxh.size() > 0 && this._mark.get(this._maxh.top()) > 0) {
+                this._mark.set(this._maxh.top(), this._mark.get(this._maxh.top()) - 1)
+                this._maxd--
+                this._maxh.pop()
+            }
+            while (this._minh.size() > 0 && this._mark.get(this._minh.top()) > 0) {
+                this._mark.set(this._minh.top(), this._mark.get(this._minh.top()) - 1)
+                this._mind--
+                this._minh.pop()
+            }
+            if (this._maxh.size() - this._maxd < this._minh.size() - this._mind) {
+                this._maxh.push(this._minh.pop())
+            } else if (this._maxh.size() - this._maxd > this._minh.size() - this._mind + 1) {
+                this._minh.push(this._maxh.pop())
+            } else {
+                return
+            }
+        }
     }
-  }
 }
 
 class PriorityQueue {
-  _queue = []
-  _compareFunc = undefined
+    _queue = []
+    _compareFunc = undefined
 
-  constructor(compareFunc) {
-    this._compareFunc = compareFunc
-  }
-
-  push(x) {
-    this._queue.push(+x)
-    this._up()
-  }
-
-  pop() {
-    let last = this.size() - 1;
-    [this._queue[0], this._queue[last]] = [this._queue[last], this._queue[0]]
-    let out = this._queue.pop()
-    this._down()
-    return out
-  }
-
-  top() {
-    return this._queue[0]
-  }
-
-  size() {
-    return this._queue.length
-  }
-
-  _up() {
-    let son = this.size() - 1
-    while (son > 0) {
-      let parent = (son - 1) >> 1
-      if (!this._compareFunc(this._queue[son], this._queue[parent])) { return }
-      [this._queue[parent], this._queue[son]] = [this._queue[son], this._queue[parent]]
-      son = parent
+    constructor(compareFunc) {
+        this._compareFunc = compareFunc
     }
-  }
 
-  _down() {
-    let parent = 0
-    while (parent < (this.size() >> 1)) {
-      let son = (parent << 1) + 1
-      if (son > this.size() - 1) {
-        return
-      }
-      if (son + 1 < this.size() && this._compareFunc(this._queue[son + 1], this._queue[son])) {
-        son++
-      }
-      if (!this._compareFunc(this._queue[son], this._queue[parent])) { return }
-      [this._queue[parent], this._queue[son]] = [this._queue[son], this._queue[parent]]
-      parent = son
+    push(x) {
+        this._queue.push(+x)
+        this._up()
     }
-  }
+
+    pop() {
+        let last = this.size() - 1;
+        [this._queue[0], this._queue[last]] = [this._queue[last], this._queue[0]]
+        let out = this._queue.pop()
+        this._down()
+        return out
+    }
+
+    top() {
+        return this._queue[0]
+    }
+
+    size() {
+        return this._queue.length
+    }
+
+    _up() {
+        let son = this.size() - 1
+        while (son > 0) {
+            let parent = (son - 1) >> 1
+            if (!this._compareFunc(this._queue[son], this._queue[parent])) { return }
+            [this._queue[parent], this._queue[son]] = [this._queue[son], this._queue[parent]]
+            son = parent
+        }
+    }
+
+    _down() {
+        let parent = 0
+        while (parent < (this.size() >> 1)) {
+            let son = (parent << 1) + 1
+            if (son > this.size() - 1) {
+                return
+            }
+            if (son + 1 < this.size() && this._compareFunc(this._queue[son + 1], this._queue[son])) {
+                son++
+            }
+            if (!this._compareFunc(this._queue[son], this._queue[parent])) { return }
+            [this._queue[parent], this._queue[son]] = [this._queue[son], this._queue[parent]]
+            parent = son
+        }
+    }
 }
 
 export { medianSlidingWindow }

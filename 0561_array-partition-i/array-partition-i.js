@@ -30,12 +30,12 @@
  * @return {number}
  */
 var arrayPairSum = function (nums) {
-  nums.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-  let out = 0
-  for (let i = 0; i < nums.length; i += 2) {
-    out += Math.min(nums[i], nums[i + 1])
-  }
-  return out
+    nums.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    let out = 0
+    for (let i = 0; i < nums.length; i += 2) {
+        out += Math.min(nums[i], nums[i + 1])
+    }
+    return out
 }
 
 export { arrayPairSum }

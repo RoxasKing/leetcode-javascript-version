@@ -43,40 +43,40 @@
  * @return {number}
  */
 var minCostConnectPoints = function (points) {
-  let n = points.length
-  let visted = []
-  let minDist = []
-  for (let i = 0; i < n; i++) {
-    visted.push(false)
-    minDist.push(Infinity)
-  }
-  minDist[0] = 0
+    let n = points.length
+    let visted = []
+    let minDist = []
+    for (let i = 0; i < n; i++) {
+        visted.push(false)
+        minDist.push(Infinity)
+    }
+    minDist[0] = 0
 
-  let out = 0
+    let out = 0
 
-  for (let i = 0; i < n; i++) {
-    let next = 0
-    let dist = Infinity
-    for (let j = 0; j < n; j++) {
-      if (!visted[j] && minDist[j] < dist) {
-        next = j
-        dist = minDist[j]
-      }
+    for (let i = 0; i < n; i++) {
+        let next = 0
+        let dist = Infinity
+        for (let j = 0; j < n; j++) {
+            if (!visted[j] && minDist[j] < dist) {
+                next = j
+                dist = minDist[j]
+            }
+        }
+
+        out += dist
+        visted[next] = true
+
+        for (let j = 0; j < n; j++) {
+            if (!visted[j]) {
+                let dist = Math.abs(points[j][0] - points[next][0]) +
+                    Math.abs(points[j][1] - points[next][1])
+                minDist[j] = Math.min(minDist[j], dist)
+            }
+        }
     }
 
-    out += dist
-    visted[next] = true
-
-    for (let j = 0; j < n; j++) {
-      if (!visted[j]) {
-        let dist = Math.abs(points[j][0] - points[next][0]) +
-          Math.abs(points[j][1] - points[next][1])
-        minDist[j] = Math.min(minDist[j], dist)
-      }
-    }
-  }
-
-  return out
+    return out
 }
 
 export { minCostConnectPoints }

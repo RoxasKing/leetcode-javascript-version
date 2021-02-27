@@ -38,39 +38,39 @@
  * @return {number}
  */
 var maximalRectangle = function (matrix) {
-  if (matrix.length === 0 || matrix[0].length === 0) {
-    return 0
-  }
-  let out = 0
-  let m = matrix.length, n = matrix[0].length
-  let heights = new Array(n).fill(0)
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      if (matrix[i][j] === '1') {
-        heights[j]++
-      } else {
-        heights[j] = 0
-      }
+    if (matrix.length === 0 || matrix[0].length === 0) {
+        return 0
     }
-    out = Math.max(out, largestRectangleArea(heights))
-  }
-  return out
+    let out = 0
+    let m = matrix.length, n = matrix[0].length
+    let heights = new Array(n).fill(0)
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (matrix[i][j] === '1') {
+                heights[j]++
+            } else {
+                heights[j] = 0
+            }
+        }
+        out = Math.max(out, largestRectangleArea(heights))
+    }
+    return out
 }
 
 let largestRectangleArea = (heights) => {
-  let out = 0
-  let stack = [-1]
-  let n = heights.length
-  for (let i = 0; i < n; i++) {
-    while (stack[stack.length - 1] != -1 && heights[stack[stack.length - 1]] >= heights[i]) {
-      out = Math.max(out, heights[stack.pop()] * (i - 1 - stack[stack.length - 1]))
+    let out = 0
+    let stack = [-1]
+    let n = heights.length
+    for (let i = 0; i < n; i++) {
+        while (stack[stack.length - 1] != -1 && heights[stack[stack.length - 1]] >= heights[i]) {
+            out = Math.max(out, heights[stack.pop()] * (i - 1 - stack[stack.length - 1]))
+        }
+        stack.push(i)
     }
-    stack.push(i)
-  }
-  while (stack[stack.length - 1] != -1) {
-    out = Math.max(out, heights[stack.pop()] * (n - 1 - stack[stack.length - 1]))
-  }
-  return out
+    while (stack[stack.length - 1] != -1) {
+        out = Math.max(out, heights[stack.pop()] * (n - 1 - stack[stack.length - 1]))
+    }
+    return out
 }
 
 export { maximalRectangle }

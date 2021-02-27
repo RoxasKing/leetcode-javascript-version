@@ -47,71 +47,71 @@
  * @return {number}
  */
 var removeStones = function (stones) {
-  let n = stones.length
-  let stonesInRow = new Map()
-  let stonesInCol = new Map()
-  for (let i = 0; i < n; i++) {
-    let row = stones[i][0], col = stones[i][1]
-    if (!stonesInRow.has(row)) { stonesInRow.set(row, []) }
-    stonesInRow.get(row).push(i)
-    if (!stonesInCol.has(col)) { stonesInCol.set(col, []) }
-    stonesInCol.get(col).push(i)
-  }
+    let n = stones.length
+    let stonesInRow = new Map()
+    let stonesInCol = new Map()
+    for (let i = 0; i < n; i++) {
+        let row = stones[i][0], col = stones[i][1]
+        if (!stonesInRow.has(row)) { stonesInRow.set(row, []) }
+        stonesInRow.get(row).push(i)
+        if (!stonesInCol.has(col)) { stonesInCol.set(col, []) }
+        stonesInCol.get(col).push(i)
+    }
 
-  let uf = new unionFind(n)
-  for (let sts of stonesInRow.values()) {
-    for (let i = 1; i < sts.length; i++) {
-      uf.union(sts[i - 1], sts[i])
+    let uf = new unionFind(n)
+    for (let sts of stonesInRow.values()) {
+        for (let i = 1; i < sts.length; i++) {
+            uf.union(sts[i - 1], sts[i])
+        }
     }
-  }
-  for (let sts of stonesInCol.values()) {
-    for (let i = 1; i < sts.length; i++) {
-      uf.union(sts[i - 1], sts[i])
+    for (let sts of stonesInCol.values()) {
+        for (let i = 1; i < sts.length; i++) {
+            uf.union(sts[i - 1], sts[i])
+        }
     }
-  }
 
-  let mark = new Map()
-  let count = 0
-  for (let i = 0; i < n; i++) {
-    let ancestorI = uf.find(i)
-    if (!mark.has(ancestorI)) {
-      count++
-      mark.set(ancestorI, true)
+    let mark = new Map()
+    let count = 0
+    for (let i = 0; i < n; i++) {
+        let ancestorI = uf.find(i)
+        if (!mark.has(ancestorI)) {
+            count++
+            mark.set(ancestorI, true)
+        }
     }
-  }
-  return n - count
+    return n - count
 }
 
 class unionFind {
-  ancestor = []
-  isEnd = []
+    ancestor = []
+    isEnd = []
 
-  constructor(n) {
-    for (let i = 0; i < n; i++) {
-      this.ancestor.push(i)
-      this.isEnd.push(false)
+    constructor(n) {
+        for (let i = 0; i < n; i++) {
+            this.ancestor.push(i)
+            this.isEnd.push(false)
+        }
     }
-  }
 
-  find(x) {
-    if (this.isEnd[this.ancestor[x]]) {
-      return this.ancestor[x]
+    find(x) {
+        if (this.isEnd[this.ancestor[x]]) {
+            return this.ancestor[x]
+        }
+        if (this.ancestor[x] !== x) {
+            this.ancestor[x] = this.find(this.ancestor[x])
+            this.isEnd[x] = false
+            this.isEnd[this.ancestor[x]] = true
+        }
+        return this.ancestor[x]
     }
-    if (this.ancestor[x] !== x) {
-      this.ancestor[x] = this.find(this.ancestor[x])
-      this.isEnd[x] = false
-      this.isEnd[this.ancestor[x]] = true
-    }
-    return this.ancestor[x]
-  }
 
-  union(x, y) {
-    let ancestorX = this.find(x)
-    let ancestorY = this.find(y)
-    this.ancestor[ancestorX] = ancestorY
-    this.isEnd[ancestorX] = false
-    this.isEnd[ancestorY] = true
-  }
+    union(x, y) {
+        let ancestorX = this.find(x)
+        let ancestorY = this.find(y)
+        this.ancestor[ancestorX] = ancestorY
+        this.isEnd[ancestorX] = false
+        this.isEnd[ancestorY] = true
+    }
 }
 
 export { removeStones }

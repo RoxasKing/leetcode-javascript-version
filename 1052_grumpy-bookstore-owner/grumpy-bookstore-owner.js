@@ -32,20 +32,20 @@
  * @return {number}
  */
 var maxSatisfied = function (customers, grumpy, X) {
-  let out = 0, max = 0
-  for (let i = 0, cur = 0; i < customers.length; i++) {
-    if (grumpy[i] == 0) {
-      out += customers[i]
-    } else {
-      cur += customers[i]
+    let out = 0, max = 0
+    for (let i = 0, cur = 0; i < customers.length; i++) {
+        if (grumpy[i] == 0) {
+            out += customers[i]
+        } else {
+            cur += customers[i]
+        }
+
+        if (i > X - 1 && grumpy[i - X] == 1) { cur -= customers[i - X] }
+
+        if (i >= X - 1 && cur > max) { max = cur }
     }
-
-    if (i > X - 1 && grumpy[i - X] == 1) { cur -= customers[i - X] }
-
-    if (i >= X - 1 && cur > max) { max = cur }
-  }
-  out += max
-  return out
+    out += max
+    return out
 }
 
 export { maxSatisfied }

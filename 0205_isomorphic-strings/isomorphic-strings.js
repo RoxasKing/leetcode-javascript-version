@@ -29,35 +29,35 @@
  * @return {boolean}
  */
 var isIsomorphic = function (s, t) {
-  if (s.length != t.length) {
-    return false
-  }
-  let map = new Map()
-  for (let i = 0; i < s.length; i++) {
-    if (!map.has(s.charAt(i))) {
-      map.set(s.charAt(i), t.charAt(i))
-    } else if (map.get(s.charAt(i)) !== t.charAt(i)) {
-      return false
+    if (s.length != t.length) {
+        return false
     }
-  }
-  map = new Map()
-  for (let i = 0; i < s.length; i++) {
-    if (!map.has(t.charAt(i))) {
-      map.set(t.charAt(i), s.charAt(i))
-    } else if (map.get(t.charAt(i)) !== s.charAt(i)) {
-      return false
+    let map = new Map()
+    for (let i = 0; i < s.length; i++) {
+        if (!map.has(s.charAt(i))) {
+            map.set(s.charAt(i), t.charAt(i))
+        } else if (map.get(s.charAt(i)) !== t.charAt(i)) {
+            return false
+        }
     }
-  }
-  return true
+    map = new Map()
+    for (let i = 0; i < s.length; i++) {
+        if (!map.has(t.charAt(i))) {
+            map.set(t.charAt(i), s.charAt(i))
+        } else if (map.get(t.charAt(i)) !== s.charAt(i)) {
+            return false
+        }
+    }
+    return true
 }
 
 var isIsomorphic2 = function (s, t) {
-  for (let i = 0; i < s.length; i++) {
-    if (s.indexOf(s[i]) !== t.indexOf(t[i])) {
-      return false
+    for (let i = 0; i < s.length; i++) {
+        if (s.indexOf(s[i]) !== t.indexOf(t[i])) {
+            return false
+        }
     }
-  }
-  return true
+    return true
 }
 
 export { isIsomorphic, isIsomorphic2 }

@@ -47,25 +47,25 @@
  * @return {number[]}
  */
 var maxSlidingWindow = function (nums, k) {
-  let stack = []
-  let out = []
-  for (let i = 0; i < nums.length; i++) {
-    while (stack.length > 0 && stack.top() < nums[i]) {
-      stack.pop()
+    let stack = []
+    let out = []
+    for (let i = 0; i < nums.length; i++) {
+        while (stack.length > 0 && stack.top() < nums[i]) {
+            stack.pop()
+        }
+        stack.push(nums[i])
+        if (i + 1 - k > 0 && nums[i - k] === stack[0]) {
+            stack.shift()
+        }
+        if (i + 1 - k >= 0) {
+            out.push(stack[0])
+        }
     }
-    stack.push(nums[i])
-    if (i + 1 - k > 0 && nums[i - k] === stack[0]) {
-      stack.shift()
-    }
-    if (i + 1 - k >= 0) {
-      out.push(stack[0])
-    }
-  }
-  return out
+    return out
 }
 
 Array.prototype.top = function () {
-  return this[this.length - 1]
+    return this[this.length - 1]
 }
 
 export { maxSlidingWindow }

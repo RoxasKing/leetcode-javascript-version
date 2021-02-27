@@ -28,17 +28,17 @@
  * @return {number[][]}
  */
 var transpose = function (matrix) {
-  let m = matrix.length, n = matrix[0].length
-  let out = new Array()
-  for (let i = 0; i < n; i++) {
-    out.push(new Array(m).fill(0))
-  }
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      out[j][i] = matrix[i][j]
+    let m = matrix.length, n = matrix[0].length
+    let out = new Array()
+    for (let i = 0; i < n; i++) {
+        out.push(new Array(m).fill(0))
     }
-  }
-  return out
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            out[j][i] = matrix[i][j]
+        }
+    }
+    return out
 }
 
 export { transpose }

@@ -27,29 +27,29 @@
  * @return {number}
  */
 var maximumProduct = function (nums) {
-  let max0 = -Infinity, max1 = -Infinity, max2 = -Infinity
-  let min0 = Infinity, min1 = Infinity
-  for (let num of nums) {
-    if (num > max2) {
-      [max0, max1, max2] = [max1, max2, num]
-    } else if (num > max1) {
-      [max0, max1] = [max1, num]
-    } else if (num > max0) {
-      max0 = num
+    let max0 = -Infinity, max1 = -Infinity, max2 = -Infinity
+    let min0 = Infinity, min1 = Infinity
+    for (let num of nums) {
+        if (num > max2) {
+            [max0, max1, max2] = [max1, max2, num]
+        } else if (num > max1) {
+            [max0, max1] = [max1, num]
+        } else if (num > max0) {
+            max0 = num
+        }
+
+        if (num < min0) {
+            [min0, min1] = [num, min0]
+        } else if (num < min1) {
+            min1 = num
+        }
     }
 
-    if (num < min0) {
-      [min0, min1] = [num, min0]
-    } else if (num < min1) {
-      min1 = num
+    if (max2 < 0) {
+        return max0 * max1 * max2
+    } else {
+        return Math.max(min0 * min1, max0 * max1) * max2
     }
-  }
-
-  if (max2 < 0) {
-    return max0 * max1 * max2
-  } else {
-    return Math.max(min0 * min1, max0 * max1) * max2
-  }
 }
 
 export { maximumProduct }

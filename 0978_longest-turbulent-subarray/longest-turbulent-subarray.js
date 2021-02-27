@@ -36,27 +36,27 @@
  * @return {number}
  */
 var maxTurbulenceSize = function (arr) {
-  let out = 1
-  let count = 1
-  for (let i = 1; i < arr.length; i++) {
-    if (arr[i] > arr[i - 1]) {
-      if (i - 2 < 0 || arr[i - 2] > arr[i - 1]) {
-        count++
-      } else {
-        count = 2
-      }
-    } else if (arr[i] < arr[i - 1]) {
-      if (i - 2 < 0 || arr[i - 2] < arr[i - 1]) {
-        count++
-      } else {
-        count = 2
-      }
-    } else {
-      count = 1
+    let out = 1
+    let count = 1
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] > arr[i - 1]) {
+            if (i - 2 < 0 || arr[i - 2] > arr[i - 1]) {
+                count++
+            } else {
+                count = 2
+            }
+        } else if (arr[i] < arr[i - 1]) {
+            if (i - 2 < 0 || arr[i - 2] < arr[i - 1]) {
+                count++
+            } else {
+                count = 2
+            }
+        } else {
+            count = 1
+        }
+        out = Math.max(out, count)
     }
-    out = Math.max(out, count)
-  }
-  return out
+    return out
 }
 
 export { maxTurbulenceSize }

@@ -44,22 +44,22 @@
  * @return {number}
  */
 var longestSubarray = function (nums, limit) {
-  let out = 0
-  let n = nums.length
-  let maxs = [], mins = []
-  for (let l = 0, r = 0; r < n; r++) {
-    while (mins.length > 0 && mins[mins.length - 1] > nums[r]) { mins.pop() }
-    while (maxs.length > 0 && maxs[maxs.length - 1] < nums[r]) { maxs.pop() }
-    mins.push(nums[r])
-    maxs.push(nums[r])
-    while (l < r && maxs[0] - mins[0] > limit) {
-      if (maxs[0] === nums[l]) { maxs.shift() }
-      if (mins[0] === nums[l]) { mins.shift() }
-      l++
+    let out = 0
+    let n = nums.length
+    let maxs = [], mins = []
+    for (let l = 0, r = 0; r < n; r++) {
+        while (mins.length > 0 && mins[mins.length - 1] > nums[r]) { mins.pop() }
+        while (maxs.length > 0 && maxs[maxs.length - 1] < nums[r]) { maxs.pop() }
+        mins.push(nums[r])
+        maxs.push(nums[r])
+        while (l < r && maxs[0] - mins[0] > limit) {
+            if (maxs[0] === nums[l]) { maxs.shift() }
+            if (mins[0] === nums[l]) { mins.shift() }
+            l++
+        }
+        out = Math.max(out, r + 1 - l)
     }
-    out = Math.max(out, r + 1 - l)
-  }
-  return out
+    return out
 }
 
 export { longestSubarray }

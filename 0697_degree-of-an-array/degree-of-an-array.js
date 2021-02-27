@@ -35,30 +35,30 @@
  * @return {number}
  */
 var findShortestSubArray = function (nums) {
-  let n = nums.length
+    let n = nums.length
 
-  let max = 0
-  let cnt = new Map()
-  for (let num of nums) {
-    if (!cnt.has(num)) { cnt.set(num, 0) }
-    cnt.set(num, cnt.get(num) + 1)
-    max = Math.max(max, cnt.get(num))
-  }
-
-  let out = n
-  cnt = new Map()
-  for (let l = 0, r = 0; r < n; r++) {
-    if (!cnt.has(nums[r])) { cnt.set(nums[r], 0) }
-    cnt.set(nums[r], cnt.get(nums[r]) + 1)
-    if (cnt.get(nums[r]) < max) { continue }
-    while (l <= r && nums[l] !== nums[r]) {
-      cnt.set(nums[l], cnt.get(nums[l]) - 1)
-      l++
+    let max = 0
+    let cnt = new Map()
+    for (let num of nums) {
+        if (!cnt.has(num)) { cnt.set(num, 0) }
+        cnt.set(num, cnt.get(num) + 1)
+        max = Math.max(max, cnt.get(num))
     }
-    out = Math.min(out, r + 1 - l)
-  }
 
-  return out
+    let out = n
+    cnt = new Map()
+    for (let l = 0, r = 0; r < n; r++) {
+        if (!cnt.has(nums[r])) { cnt.set(nums[r], 0) }
+        cnt.set(nums[r], cnt.get(nums[r]) + 1)
+        if (cnt.get(nums[r]) < max) { continue }
+        while (l <= r && nums[l] !== nums[r]) {
+            cnt.set(nums[l], cnt.get(nums[l]) - 1)
+            l++
+        }
+        out = Math.min(out, r + 1 - l)
+    }
+
+    return out
 }
 
 export { findShortestSubArray }

@@ -34,16 +34,16 @@
  * @return {number}
  */
 var longestOnes = function (A, K) {
-  let out = 0
-  for (let l = 0, r = 0; r < A.length; r++) {
-    if (A[r] === 0) { K-- }
-    while (l <= r && K < 0) {
-      if (A[l] === 0) { K++ }
-      l++
+    let out = 0
+    for (let l = 0, r = 0; r < A.length; r++) {
+        if (A[r] === 0) { K-- }
+        while (l <= r && K < 0) {
+            if (A[l] === 0) { K++ }
+            l++
+        }
+        out = Math.max(out, r + 1 - l)
     }
-    out = Math.max(out, r + 1 - l)
-  }
-  return out
+    return out
 }
 
 export { longestOnes }

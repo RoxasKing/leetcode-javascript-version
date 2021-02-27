@@ -30,22 +30,22 @@
  * @return {number}
  */
 var eraseOverlapIntervals = function (intervals) {
-  intervals.sort((a, b) => {
-    if (a[1] != b[1]) {
-      return a[1] - b[1]
+    intervals.sort((a, b) => {
+        if (a[1] != b[1]) {
+            return a[1] - b[1]
+        }
+        return a[0] - b[0]
+    })
+    let count = 0
+    let pre = -Infinity
+    for (let interval of intervals) {
+        if (interval[0] < pre) {
+            count++
+        } else {
+            pre = interval[1]
+        }
     }
-    return a[0] - b[0]
-  })
-  let count = 0
-  let pre = -Infinity
-  for (let interval of intervals) {
-    if (interval[0] < pre) {
-      count++
-    } else {
-      pre = interval[1]
-    }
-  }
-  return count
+    return count
 }
 
 export { eraseOverlapIntervals }

@@ -21,16 +21,16 @@
  * @return {number}
  */
 var numEquivDominoPairs = function (dominoes) {
-  let count = new Array(100).fill(0)
-  for (let d of dominoes) {
-    if (d[0] > d[1]) { [d[0], d[1]] = [d[1], d[0]] }
-    count[d[0] * 10 + d[1]]++
-  }
-  let out = 0
-  for (let c of count) {
-    out += c * (c - 1) / 2
-  }
-  return out
+    let count = new Array(100).fill(0)
+    for (let d of dominoes) {
+        if (d[0] > d[1]) { [d[0], d[1]] = [d[1], d[0]] }
+        count[d[0] * 10 + d[1]]++
+    }
+    let out = 0
+    for (let c of count) {
+        out += c * (c - 1) / 2
+    }
+    return out
 }
 
 export { numEquivDominoPairs }

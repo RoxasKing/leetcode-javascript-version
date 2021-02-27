@@ -40,101 +40,101 @@
  * @return {number[][]}
  */
 var findCriticalAndPseudoCriticalEdges = function (n, edges) {
-  let m = edges.length
+    let m = edges.length
 
-  let idxes = []
-  for (let i = 0; i < m; i++) { idxes.push(i) }
-  idxes.sort((a, b) => (edges[a][2] < edges[b][2]) ? -1 : (edges[a][2] < edges[b][2]) ? -1 : 0)
+    let idxes = []
+    for (let i = 0; i < m; i++) { idxes.push(i) }
+    idxes.sort((a, b) => (edges[a][2] < edges[b][2]) ? -1 : (edges[a][2] < edges[b][2]) ? -1 : 0)
 
-  // first, find min weight MST
-  let minWeight = 0, minSet = [], others = []
-  let visited = new Map()
-  let uf = new unionFind(n)
-  for (let i of idxes) {
-    let edge = edges[i]
-    let x = edge[0], y = edge[1], weight = edge[2]
-    if (uf.find(x) === uf.find(y)) {
-      others.push(i)
-      continue
-    }
-    minWeight += weight
-    visited.set(i, true)
-    minSet.push(i)
-    uf.union(x, y)
-  }
-
-  // then, find critical edges
-  let critical = new Map()
-  for (let i of minSet) {
+    // first, find min weight MST
+    let minWeight = 0, minSet = [], others = []
+    let visited = new Map()
     let uf = new unionFind(n)
-    let curWeight = 0
-    for (let j of idxes) {
-      if (j === i) { continue }
-      let edge = edges[j]
-      let x = edge[0], y = edge[1], weight = edge[2]
-      if (uf.find(x) === uf.find(y)) { continue }
-      uf.union(x, y)
-      curWeight += weight
+    for (let i of idxes) {
+        let edge = edges[i]
+        let x = edge[0], y = edge[1], weight = edge[2]
+        if (uf.find(x) === uf.find(y)) {
+            others.push(i)
+            continue
+        }
+        minWeight += weight
+        visited.set(i, true)
+        minSet.push(i)
+        uf.union(x, y)
     }
-    if (curWeight !== minWeight) { critical.set(i, true) }
-  }
 
-  // last, find pseudo-critical edges
-  for (let i of others) {
-    let edge = edges[i]
-    let x = edge[0], y = edge[1], weight = edge[2]
-    let uf = new unionFind(n)
-    let curWeight = weight
-    uf.union(x, y)
-    for (let j of minSet) {
-      let edge = edges[j]
-      let x = edge[0], y = edge[1], weight = edge[2]
-      if (uf.find(x) === uf.find(y)) { continue }
-      uf.union(x, y)
-      curWeight += weight
+    // then, find critical edges
+    let critical = new Map()
+    for (let i of minSet) {
+        let uf = new unionFind(n)
+        let curWeight = 0
+        for (let j of idxes) {
+            if (j === i) { continue }
+            let edge = edges[j]
+            let x = edge[0], y = edge[1], weight = edge[2]
+            if (uf.find(x) === uf.find(y)) { continue }
+            uf.union(x, y)
+            curWeight += weight
+        }
+        if (curWeight !== minWeight) { critical.set(i, true) }
     }
-    if (curWeight === minWeight) { visited.set(i, true) }
-  }
 
-  let out = [[], []]
-  for (let i = 0; i < m; i++) {
-    if (critical.get(i)) {
-      out[0].push(i)
-    } else if (visited.get(i)) {
-      out[1].push(i)
+    // last, find pseudo-critical edges
+    for (let i of others) {
+        let edge = edges[i]
+        let x = edge[0], y = edge[1], weight = edge[2]
+        let uf = new unionFind(n)
+        let curWeight = weight
+        uf.union(x, y)
+        for (let j of minSet) {
+            let edge = edges[j]
+            let x = edge[0], y = edge[1], weight = edge[2]
+            if (uf.find(x) === uf.find(y)) { continue }
+            uf.union(x, y)
+            curWeight += weight
+        }
+        if (curWeight === minWeight) { visited.set(i, true) }
     }
-  }
-  return out
+
+    let out = [[], []]
+    for (let i = 0; i < m; i++) {
+        if (critical.get(i)) {
+            out[0].push(i)
+        } else if (visited.get(i)) {
+            out[1].push(i)
+        }
+    }
+    return out
 }
 
 class unionFind {
-  parent = []
-  size = []
+    parent = []
+    size = []
 
-  constructor(n) {
-    for (let i = 0; i < n; i++) {
-      this.parent.push(i)
-      this.size.push(1)
+    constructor(n) {
+        for (let i = 0; i < n; i++) {
+            this.parent.push(i)
+            this.size.push(1)
+        }
     }
-  }
 
-  find(x) {
-    if (this.parent[x] !== x) { this.parent[x] = this.find(this.parent[x]) }
+    find(x) {
+        if (this.parent[x] !== x) { this.parent[x] = this.find(this.parent[x]) }
 
-    return this.parent[x]
-  }
+        return this.parent[x]
+    }
 
-  union(x, y) {
-    x = this.find(x)
-    y = this.find(y)
+    union(x, y) {
+        x = this.find(x)
+        y = this.find(y)
 
-    if (x === y) { return }
+        if (x === y) { return }
 
-    if (this.size[x] < this.size[y]) { [x, y] = [y, x] }
+        if (this.size[x] < this.size[y]) { [x, y] = [y, x] }
 
-    this.parent[y] = x
-    this.size[x] += this.size[y]
-  }
+        this.parent[y] = x
+        this.size[x] += this.size[y]
+    }
 }
 
 export { findCriticalAndPseudoCriticalEdges }

@@ -33,14 +33,14 @@
  * @return {number[]}
  */
 var getRow = function (rowIndex) {
-  let out = []
-  for (let i = 0; i <= rowIndex; i++) {
-    out.push(1)
-    for (let j = i - 1; j >= 1; j--) {
-      out[j] += out[j - 1]
+    let out = []
+    for (let i = 0; i <= rowIndex; i++) {
+        out.push(1)
+        for (let j = i - 1; j >= 1; j--) {
+            out[j] += out[j - 1]
+        }
     }
-  }
-  return out
+    return out
 }
 
 export { getRow }

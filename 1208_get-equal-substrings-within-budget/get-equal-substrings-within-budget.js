@@ -38,21 +38,21 @@
  * @return {number}
  */
 var equalSubstring = function (s, t, maxCost) {
-  let n = s.length
-  let cost = []
-  for (let i = 0; i < n; i++) { cost.push(Math.abs(s.charCodeAt(i) - t.charCodeAt(i))) }
-  let out = 0
-  let sum = 0
-  let l = 0, r = 0
-  for (; r < n; r++) {
-    sum += cost[r]
-    while (sum > maxCost) {
-      sum -= cost[l]
-      l++
+    let n = s.length
+    let cost = []
+    for (let i = 0; i < n; i++) { cost.push(Math.abs(s.charCodeAt(i) - t.charCodeAt(i))) }
+    let out = 0
+    let sum = 0
+    let l = 0, r = 0
+    for (; r < n; r++) {
+        sum += cost[r]
+        while (sum > maxCost) {
+            sum -= cost[l]
+            l++
+        }
+        out = Math.max(out, r + 1 - l)
     }
-    out = Math.max(out, r + 1 - l)
-  }
-  return out
+    return out
 }
 
 export { equalSubstring }

@@ -63,131 +63,131 @@
  * @return {number[]}
  */
 var hitBricks = function (grid, hits) {
-  let out = []
+    let out = []
 
-  // hit all bricks in hits array
-  for (let hit of hits) {
-    let i = hit[0], j = hit[1]
-    if (grid[i][j] === 0) {
-      out.push(0)
-    } else {
-      out.push(-1)
-      grid[i][j] = 0
-    }
-  }
-
-  let count = 0
-  let queue = []
-  let m = grid.length, n = grid[0].length
-
-  // put all top brick in queue
-  for (let j = 0; j < n; j++) {
-    if (grid[0][j] === 0) { continue }
-    count++
-    queue.push([0, j])
-  }
-
-  let uf = new unionFind(m * n)
-
-  // union all stable brick
-  while (queue.length > 0) {
-    let brick = queue.shift()
-    let i = brick[0], j = brick[1]
-    let idx = i * n + j
-    for (let move of moves) {
-      let ni = i + move[0], nj = j + move[1]
-      let newIdx = ni * n + nj
-      if (ni < 1 || m - 1 < ni || nj < 0 || n - 1 < nj ||
-        grid[ni][nj] === 0 || uf.find(newIdx) < n) {
-        continue
-      }
-      uf.union(newIdx, idx)
-      count++
-      queue.push([ni, nj])
-    }
-  }
-
-  // restore broken bricks in reverse order
-  for (let k = hits.length - 1; k >= 0; k--) {
-    if (out[k] !== -1) { continue }
-
-    let i = hits[k][0], j = hits[k][1]
-    let idx = i * n + j
-    grid[i][j] = 1
-    let cur = count + 1
-
-    // if restore's brick near to stable brick, union it
-    for (let move of moves) {
-      let ni = i + move[0], nj = j + move[1]
-      let newIdx = ni * n + nj
-      if (ni < 0 || m - 1 < ni || nj < 0 || n - 1 < nj ||
-        grid[ni][nj] === 0 || uf.find(newIdx) >= n) {
-        continue
-      }
-      uf.union(idx, newIdx)
-      break
-    }
-
-    let queue = []
-    if (uf.find(idx) < n) { queue.push([i, j]) }
-
-    // union all bricks that are not stable
-    while (queue.length > 0) {
-      let brick = queue.shift()
-      let i = brick[0], j = brick[1]
-      let idx = i * n + j
-      for (let move of moves) {
-        let ni = i + move[0], nj = j + move[1]
-        let newIdx = ni * n + nj
-        if (ni < 1 || m - 1 < ni || nj < 0 || n - 1 < nj ||
-          grid[ni][nj] === 0 || uf.find(newIdx) < n) {
-          continue
+    // hit all bricks in hits array
+    for (let hit of hits) {
+        let i = hit[0], j = hit[1]
+        if (grid[i][j] === 0) {
+            out.push(0)
+        } else {
+            out.push(-1)
+            grid[i][j] = 0
         }
-        uf.union(newIdx, idx)
-        cur++
-        queue.push([ni, nj])
-      }
     }
 
-    out[k] = cur - count - 1
-    count = cur
-  }
+    let count = 0
+    let queue = []
+    let m = grid.length, n = grid[0].length
 
-  return out
+    // put all top brick in queue
+    for (let j = 0; j < n; j++) {
+        if (grid[0][j] === 0) { continue }
+        count++
+        queue.push([0, j])
+    }
+
+    let uf = new unionFind(m * n)
+
+    // union all stable brick
+    while (queue.length > 0) {
+        let brick = queue.shift()
+        let i = brick[0], j = brick[1]
+        let idx = i * n + j
+        for (let move of moves) {
+            let ni = i + move[0], nj = j + move[1]
+            let newIdx = ni * n + nj
+            if (ni < 1 || m - 1 < ni || nj < 0 || n - 1 < nj ||
+                grid[ni][nj] === 0 || uf.find(newIdx) < n) {
+                continue
+            }
+            uf.union(newIdx, idx)
+            count++
+            queue.push([ni, nj])
+        }
+    }
+
+    // restore broken bricks in reverse order
+    for (let k = hits.length - 1; k >= 0; k--) {
+        if (out[k] !== -1) { continue }
+
+        let i = hits[k][0], j = hits[k][1]
+        let idx = i * n + j
+        grid[i][j] = 1
+        let cur = count + 1
+
+        // if restore's brick near to stable brick, union it
+        for (let move of moves) {
+            let ni = i + move[0], nj = j + move[1]
+            let newIdx = ni * n + nj
+            if (ni < 0 || m - 1 < ni || nj < 0 || n - 1 < nj ||
+                grid[ni][nj] === 0 || uf.find(newIdx) >= n) {
+                continue
+            }
+            uf.union(idx, newIdx)
+            break
+        }
+
+        let queue = []
+        if (uf.find(idx) < n) { queue.push([i, j]) }
+
+        // union all bricks that are not stable
+        while (queue.length > 0) {
+            let brick = queue.shift()
+            let i = brick[0], j = brick[1]
+            let idx = i * n + j
+            for (let move of moves) {
+                let ni = i + move[0], nj = j + move[1]
+                let newIdx = ni * n + nj
+                if (ni < 1 || m - 1 < ni || nj < 0 || n - 1 < nj ||
+                    grid[ni][nj] === 0 || uf.find(newIdx) < n) {
+                    continue
+                }
+                uf.union(newIdx, idx)
+                cur++
+                queue.push([ni, nj])
+            }
+        }
+
+        out[k] = cur - count - 1
+        count = cur
+    }
+
+    return out
 }
 
 const moves = [[-1, 0], [1, 0], [0, -1], [0, 1]]
 
 class unionFind {
-  ancestor = []
-  isEnd = []
+    ancestor = []
+    isEnd = []
 
-  constructor(n) {
-    for (let i = 0; i < n; i++) {
-      this.ancestor.push(i)
-      this.isEnd.push(false)
+    constructor(n) {
+        for (let i = 0; i < n; i++) {
+            this.ancestor.push(i)
+            this.isEnd.push(false)
+        }
     }
-  }
 
-  find(x) {
-    if (this.isEnd[this.ancestor[x]]) {
-      return this.ancestor[x]
+    find(x) {
+        if (this.isEnd[this.ancestor[x]]) {
+            return this.ancestor[x]
+        }
+        if (this.ancestor[x] !== x) {
+            this.ancestor[x] = this.find(this.ancestor[x])
+            this.isEnd[x] = false
+            this.isEnd[this.ancestor[x]] = true
+        }
+        return this.ancestor[x]
     }
-    if (this.ancestor[x] !== x) {
-      this.ancestor[x] = this.find(this.ancestor[x])
-      this.isEnd[x] = false
-      this.isEnd[this.ancestor[x]] = true
-    }
-    return this.ancestor[x]
-  }
 
-  union(x, y) {
-    let ancestorX = this.find(x)
-    let ancestorY = this.find(y)
-    this.ancestor[ancestorX] = ancestorY
-    this.isEnd[ancestorX] = false
-    this.isEnd[ancestorY] = true
-  }
+    union(x, y) {
+        let ancestorX = this.find(x)
+        let ancestorY = this.find(y)
+        this.ancestor[ancestorX] = ancestorY
+        this.isEnd[ancestorX] = false
+        this.isEnd[ancestorY] = true
+    }
 }
 
 export { hitBricks }

@@ -31,22 +31,22 @@
  * @return {number[][]}
  */
 var flipAndInvertImage = function (A) {
-  let m = A.length, n = A[0].length
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n >> 1; j++) {
-      [A[i][j], A[i][n - 1 - j]] = [A[i][n - 1 - j], A[i][j]]
+    let m = A.length, n = A[0].length
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n >> 1; j++) {
+            [A[i][j], A[i][n - 1 - j]] = [A[i][n - 1 - j], A[i][j]]
+        }
     }
-  }
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      if (A[i][j] === 0) {
-        A[i][j] = 1
-      } else {
-        A[i][j] = 0
-      }
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (A[i][j] === 0) {
+                A[i][j] = 1
+            } else {
+                A[i][j] = 0
+            }
+        }
     }
-  }
-  return A
+    return A
 }
 
 export { flipAndInvertImage }

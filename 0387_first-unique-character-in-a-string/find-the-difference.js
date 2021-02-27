@@ -35,31 +35,31 @@
  * @return {number}
  */
 var firstUniqChar = function (s) {
-  let count = new Map()
-  for (let c of s) {
-    if (count.has(c)) {
-      count.set(c, count.get(c) + 1)
-    } else {
-      count.set(c, 1)
+    let count = new Map()
+    for (let c of s) {
+        if (count.has(c)) {
+            count.set(c, count.get(c) + 1)
+        } else {
+            count.set(c, 1)
+        }
     }
-  }
-  for (let i = 0; i < s.length; i++) {
-    if (count.get(s.charAt(i)) === 1) {
-      return i
+    for (let i = 0; i < s.length; i++) {
+        if (count.get(s.charAt(i)) === 1) {
+            return i
+        }
     }
-  }
-  return -1
+    return -1
 }
 
 var firstUniqChar2 = function (s) {
-  let minIdx = s.length
-  for (let c of 'abcdefghijklmnopqrstuvwxyz') {
-    let index = s.indexOf(c)
-    if (index != -1 && index === s.lastIndexOf(c)) {
-      minIdx = Math.min(minIdx, index)
+    let minIdx = s.length
+    for (let c of 'abcdefghijklmnopqrstuvwxyz') {
+        let index = s.indexOf(c)
+        if (index != -1 && index === s.lastIndexOf(c)) {
+            minIdx = Math.min(minIdx, index)
+        }
     }
-  }
-  return minIdx === s.length ? -1 : minIdx
+    return minIdx === s.length ? -1 : minIdx
 }
 
 export { firstUniqChar, firstUniqChar2 }

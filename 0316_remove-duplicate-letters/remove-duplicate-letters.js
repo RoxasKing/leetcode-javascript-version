@@ -25,31 +25,31 @@
  * @return {string}
  */
 var removeDuplicateLetters = function (s) {
-  let cnt = new Map()
-  for (let c of s) {
-    if (!cnt.has(c)) {
-      cnt.set(c, 1)
-      continue
+    let cnt = new Map()
+    for (let c of s) {
+        if (!cnt.has(c)) {
+            cnt.set(c, 1)
+            continue
+        }
+        cnt.set(c, cnt.get(c) + 1)
     }
-    cnt.set(c, cnt.get(c) + 1)
-  }
-  let mark = new Map()
-  let stk = []
-  for (let c of s) {
-    if (mark.get(c)) {
-      cnt.set(c, cnt.get(c) - 1)
-      continue
+    let mark = new Map()
+    let stk = []
+    for (let c of s) {
+        if (mark.get(c)) {
+            cnt.set(c, cnt.get(c) - 1)
+            continue
+        }
+        while (stk.length > 0 && (stk[stk.length - 1] >= c) && cnt.get(stk[stk.length - 1]) > 1) {
+            let char = stk[stk.length - 1]
+            mark.set(char, false)
+            cnt.set(char, cnt.get(char) - 1)
+            stk.pop()
+        }
+        mark.set(c, true)
+        stk.push(c)
     }
-    while (stk.length > 0 && (stk[stk.length - 1] >= c) && cnt.get(stk[stk.length - 1]) > 1) {
-      let char = stk[stk.length - 1]
-      mark.set(char, false)
-      cnt.set(char, cnt.get(char) - 1)
-      stk.pop()
-    }
-    mark.set(c, true)
-    stk.push(c)
-  }
-  return stk.join('')
+    return stk.join('')
 }
 
 export { removeDuplicateLetters }

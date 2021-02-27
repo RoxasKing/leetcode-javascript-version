@@ -30,26 +30,26 @@
  * @return {number}
  */
 var findCircleNum = function (isConnected) {
-  let n = isConnected.length
-  let visited = new Array(n).fill(false)
-  let count = 0
-  for (let i = 0; i < n; i++) {
-    if (!visited[i]) {
-      visited[i] = true
-      dfs(isConnected, n, visited, i)
-      count++
+    let n = isConnected.length
+    let visited = new Array(n).fill(false)
+    let count = 0
+    for (let i = 0; i < n; i++) {
+        if (!visited[i]) {
+            visited[i] = true
+            dfs(isConnected, n, visited, i)
+            count++
+        }
     }
-  }
-  return count
+    return count
 }
 
 let dfs = (isConnected, n, visited, i) => {
-  for (let j = 0; j < n; j++) {
-    if (isConnected[i][j] == 1 && !visited[j]) {
-      visited[j] = true
-      dfs(isConnected, n, visited, j)
+    for (let j = 0; j < n; j++) {
+        if (isConnected[i][j] == 1 && !visited[j]) {
+            visited[j] = true
+            dfs(isConnected, n, visited, j)
+        }
     }
-  }
 }
 
 export { findCircleNum }

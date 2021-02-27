@@ -30,17 +30,17 @@
  * @return {number}
  */
 var minPatches = function (nums, n) {
-  let patches = 0
-  for (let i = 0, x = 1; x <= n;) {
-    if (i < nums.length && nums[i] <= x) {
-      x += nums[i]
-      i++
-    } else {
-      x *= 2
-      patches++
+    let patches = 0
+    for (let i = 0, x = 1; x <= n;) {
+        if (i < nums.length && nums[i] <= x) {
+            x += nums[i]
+            i++
+        } else {
+            x *= 2
+            patches++
+        }
     }
-  }
-  return patches
+    return patches
 }
 
 export { minPatches }

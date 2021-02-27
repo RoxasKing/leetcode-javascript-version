@@ -32,11 +32,11 @@
  * @return {number}
  */
 var fib = function (n) {
-  let dp0 = 0, dp1 = 1
-  for (let i = 1; i <= n; i++) {
-    [dp0, dp1] = [dp1, dp0 + dp1]
-  }
-  return dp0
+    let dp0 = 0, dp1 = 1
+    for (let i = 1; i <= n; i++) {
+        [dp0, dp1] = [dp1, dp0 + dp1]
+    }
+    return dp0
 }
 
 export { fib }

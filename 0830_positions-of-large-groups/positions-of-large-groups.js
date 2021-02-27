@@ -38,22 +38,22 @@
  * @return {number[][]}
  */
 var largeGroupPositions = function (s) {
-  let out = []
-  let l = 0, r = 0
-  for (let i = 1; i < s.length; i++) {
-    if (s.charAt(i) === s.charAt(i - 1)) {
-      r++
-    } else {
-      if (r + 1 - l >= 3) {
-        out.push([l, r])
-      }
-      l = i, r = i
+    let out = []
+    let l = 0, r = 0
+    for (let i = 1; i < s.length; i++) {
+        if (s.charAt(i) === s.charAt(i - 1)) {
+            r++
+        } else {
+            if (r + 1 - l >= 3) {
+                out.push([l, r])
+            }
+            l = i, r = i
+        }
     }
-  }
-  if (r + 1 - l >= 3) {
-    out.push([l, r])
-  }
-  return out
+    if (r + 1 - l >= 3) {
+        out.push([l, r])
+    }
+    return out
 }
 
 export { largeGroupPositions }

@@ -40,17 +40,17 @@
  * @return {number[]}
  */
 var addToArrayForm = function (A, K) {
-  A = A.reverse()
-  let B = []
-  while (K > 0) { B.push(K % 10), K = Math.floor(K / 10) }
-  let C = [], remain = 0
-  for (let i = 0, j = 0; i < A.length || j < B.length;) {
-    if (i < A.length) { remain += A[i], i++ }
-    if (j < B.length) { remain += B[j], j++ }
-    C.push(remain % 10), remain = Math.floor(remain / 10)
-  }
-  if (remain > 0) { C.push(remain) }
-  return C.reverse()
+    A = A.reverse()
+    let B = []
+    while (K > 0) { B.push(K % 10), K = Math.floor(K / 10) }
+    let C = [], remain = 0
+    for (let i = 0, j = 0; i < A.length || j < B.length;) {
+        if (i < A.length) { remain += A[i], i++ }
+        if (j < B.length) { remain += B[j], j++ }
+        C.push(remain % 10), remain = Math.floor(remain / 10)
+    }
+    if (remain > 0) { C.push(remain) }
+    return C.reverse()
 }
 
 export { addToArrayForm }

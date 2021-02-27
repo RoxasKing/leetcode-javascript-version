@@ -26,24 +26,24 @@
  * @return {number}
  */
 var candy = function (ratings) {
-  let n = ratings.length
-  let dp = []
-  for (let i = 0; i < n; i++) {
-    dp.push(1)
-  }
-  for (let i = 1; i < n; i++) {
-    if (ratings[i] > ratings[i - 1]) {
-      dp[i] = Math.max(dp[i], dp[i - 1] + 1)
+    let n = ratings.length
+    let dp = []
+    for (let i = 0; i < n; i++) {
+        dp.push(1)
     }
-  }
-  let out = dp[n - 1]
-  for (let i = n - 2; i >= 0; i--) {
-    if (ratings[i] > ratings[i + 1]) {
-      dp[i] = Math.max(dp[i], dp[i + 1] + 1)
+    for (let i = 1; i < n; i++) {
+        if (ratings[i] > ratings[i - 1]) {
+            dp[i] = Math.max(dp[i], dp[i - 1] + 1)
+        }
     }
-    out += dp[i]
-  }
-  return out
+    let out = dp[n - 1]
+    for (let i = n - 2; i >= 0; i--) {
+        if (ratings[i] > ratings[i + 1]) {
+            dp[i] = Math.max(dp[i], dp[i + 1] + 1)
+        }
+        out += dp[i]
+    }
+    return out
 }
 
 export { candy }

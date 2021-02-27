@@ -27,25 +27,25 @@
  * @return {boolean}
  */
 var checkInclusion = function (s1, s2) {
-  let n1 = s1.length, n2 = s2.length
-  let cnt = new Map()
-  for (let i = 0; i < n1; i++) {
-    let c = s1.charAt(i)
-    if (!cnt.has(c)) { cnt.set(c, 0) }
-    cnt.set(c, cnt.get(c) + 1)
-  }
-  for (let l = 0, r = 0; r < n2; r++) {
-    let cr = s2.charAt(r)
-    if (!cnt.has(cr)) { cnt.set(cr, 0) }
-    cnt.set(cr, cnt.get(cr) - 1)
-    while (l <= r && cnt.get(cr) < 0) {
-      let cl = s2.charAt(l)
-      cnt.set(cl, cnt.get(cl) + 1)
-      l++
+    let n1 = s1.length, n2 = s2.length
+    let cnt = new Map()
+    for (let i = 0; i < n1; i++) {
+        let c = s1.charAt(i)
+        if (!cnt.has(c)) { cnt.set(c, 0) }
+        cnt.set(c, cnt.get(c) + 1)
     }
-    if (r + 1 - l === n1) { return true }
-  }
-  return false
+    for (let l = 0, r = 0; r < n2; r++) {
+        let cr = s2.charAt(r)
+        if (!cnt.has(cr)) { cnt.set(cr, 0) }
+        cnt.set(cr, cnt.get(cr) - 1)
+        while (l <= r && cnt.get(cr) < 0) {
+            let cl = s2.charAt(l)
+            cnt.set(cl, cnt.get(cl) + 1)
+            l++
+        }
+        if (r + 1 - l === n1) { return true }
+    }
+    return false
 }
 
 export { checkInclusion }

@@ -35,17 +35,17 @@
  * @return {boolean[]}
  */
 var prefixesDivBy5 = function (A) {
-  let out = []
-  let sum = 0
-  for (let i = 0; i < A.length; i++) {
-    sum = ((sum << 1) + A[i]) % 5
-    if (sum === 0) {
-      out.push(true)
-    } else {
-      out.push(false)
+    let out = []
+    let sum = 0
+    for (let i = 0; i < A.length; i++) {
+        sum = ((sum << 1) + A[i]) % 5
+        if (sum === 0) {
+            out.push(true)
+        } else {
+            out.push(false)
+        }
     }
-  }
-  return out
+    return out
 }
 
 export { prefixesDivBy5 }

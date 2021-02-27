@@ -28,39 +28,39 @@
  * @return {number[][]}
  */
 var zigzagLevelOrder = function (root) {
-  if (root === null) {
-    return []
-  }
-  let out = []
-  let queue = [root]
-  let reverse = false
-  while (queue.length > 0) {
-    let n = queue.length
-    let tmp = []
-    for (let i = 0; i < n; i++) {
-      tmp.push(queue[i].val)
-      if (queue[i].left != null) {
-        queue.push(queue[i].left)
-      }
-      if (queue[i].right != null) {
-        queue.push(queue[i].right)
-      }
+    if (root === null) {
+        return []
     }
-    if (reverse) {
-      for (let i = 0; i < n >> 1; i++) {
-        [tmp[i], tmp[n - 1 - i]] = [tmp[n - 1 - i], tmp[i]]
-      }
+    let out = []
+    let queue = [root]
+    let reverse = false
+    while (queue.length > 0) {
+        let n = queue.length
+        let tmp = []
+        for (let i = 0; i < n; i++) {
+            tmp.push(queue[i].val)
+            if (queue[i].left != null) {
+                queue.push(queue[i].left)
+            }
+            if (queue[i].right != null) {
+                queue.push(queue[i].right)
+            }
+        }
+        if (reverse) {
+            for (let i = 0; i < n >> 1; i++) {
+                [tmp[i], tmp[n - 1 - i]] = [tmp[n - 1 - i], tmp[i]]
+            }
+        }
+        out.push(tmp)
+        queue = queue.slice(n)
+        reverse = !reverse
     }
-    out.push(tmp)
-    queue = queue.slice(n)
-    reverse = !reverse
-  }
-  return out
+    return out
 }
 
 function TreeNode(val) {
-  this.val = val
-  this.left = this.right = null
+    this.val = val
+    this.left = this.right = null
 }
 
 export { zigzagLevelOrder, TreeNode }

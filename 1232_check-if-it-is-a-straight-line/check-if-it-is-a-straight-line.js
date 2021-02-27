@@ -25,13 +25,13 @@
  * @return {boolean}
  */
 var checkStraightLine = function (coordinates) {
-  let x0 = coordinates[0][0], y0 = coordinates[0][1]
-  let x1 = coordinates[1][0], y1 = coordinates[1][1]
-  for (let i = 2; i < coordinates.length; i++) {
-    let xi = coordinates[i][0], yi = coordinates[i][1]
-    if ((x1 - x0) * (yi - y0) !== (xi - x0) * (y1 - y0)) { return false }
-  }
-  return true
+    let x0 = coordinates[0][0], y0 = coordinates[0][1]
+    let x1 = coordinates[1][0], y1 = coordinates[1][1]
+    for (let i = 2; i < coordinates.length; i++) {
+        let xi = coordinates[i][0], yi = coordinates[i][1]
+        if ((x1 - x0) * (yi - y0) !== (xi - x0) * (y1 - y0)) { return false }
+    }
+    return true
 }
 
 export { checkStraightLine }

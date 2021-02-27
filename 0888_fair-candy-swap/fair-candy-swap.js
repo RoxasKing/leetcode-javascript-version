@@ -39,21 +39,21 @@
  * @return {number[]}
  */
 var fairCandySwap = function (A, B) {
-  let sumA = 0, sumB = 0
-  let dict = new Map()
-  for (let num of A) {
-    sumA += num
-  }
-  for (let num of B) {
-    sumB += num
-    dict.set(num, undefined)
-  }
-  let diff = (sumB - sumA) / 2
-  for (let num of A) {
-    if (dict.has(num + diff)) {
-      return [num, num + diff]
+    let sumA = 0, sumB = 0
+    let dict = new Map()
+    for (let num of A) {
+        sumA += num
     }
-  }
+    for (let num of B) {
+        sumB += num
+        dict.set(num, undefined)
+    }
+    let diff = (sumB - sumA) / 2
+    for (let num of A) {
+        if (dict.has(num + diff)) {
+            return [num, num + diff]
+        }
+    }
 }
 
 export { fairCandySwap }

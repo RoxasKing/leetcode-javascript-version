@@ -66,74 +66,74 @@
  * @return {number}
  */
 var regionsBySlashes = function (grid) {
-  let n = grid.length
-  let size = 4 * n * n
-  let uf = new unionFind(size)
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      let start = 4 * (n * j + i)
-      let up = start, right = start + 1, down = start + 2, left = start + 3
-      let char = grid[i].charAt(j)
-      if (char === '/') {
-        uf.union(right, down)
-        uf.union(up, left)
-      } else if (char == '\\') {
-        uf.union(up, right)
-        uf.union(down, left)
-      } else {
-        uf.union(right, up)
-        uf.union(down, up)
-        uf.union(left, up)
-      }
-      if (i + 1 < n) {
-        let rightStart = start + 4
-        let rightLeft = rightStart + 3
-        uf.union(rightLeft, right)
-      }
-      if (j + 1 < n) {
-        let downStart = start + 4 * n
-        let downUp = downStart
-        uf.union(downUp, down)
-      }
+    let n = grid.length
+    let size = 4 * n * n
+    let uf = new unionFind(size)
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            let start = 4 * (n * j + i)
+            let up = start, right = start + 1, down = start + 2, left = start + 3
+            let char = grid[i].charAt(j)
+            if (char === '/') {
+                uf.union(right, down)
+                uf.union(up, left)
+            } else if (char == '\\') {
+                uf.union(up, right)
+                uf.union(down, left)
+            } else {
+                uf.union(right, up)
+                uf.union(down, up)
+                uf.union(left, up)
+            }
+            if (i + 1 < n) {
+                let rightStart = start + 4
+                let rightLeft = rightStart + 3
+                uf.union(rightLeft, right)
+            }
+            if (j + 1 < n) {
+                let downStart = start + 4 * n
+                let downUp = downStart
+                uf.union(downUp, down)
+            }
+        }
     }
-  }
 
-  let out = 0
-  let mark = new Map()
-  for (let i = 0; i < size; i++) {
-    let x = uf.find(i)
-    if (!mark.has(x)) {
-      out++
-      mark.set(x)
+    let out = 0
+    let mark = new Map()
+    for (let i = 0; i < size; i++) {
+        let x = uf.find(i)
+        if (!mark.has(x)) {
+            out++
+            mark.set(x)
+        }
     }
-  }
-  return out
+    return out
 }
 
 class unionFind {
-  parent = []
-  size = []
+    parent = []
+    size = []
 
-  constructor(n) {
-    for (let i = 0; i < n; i++) {
-      this.parent.push(i)
-      this.size.push(1)
+    constructor(n) {
+        for (let i = 0; i < n; i++) {
+            this.parent.push(i)
+            this.size.push(1)
+        }
     }
-  }
 
-  find(x) {
-    if (this.parent[x] !== x) { this.parent[x] = this.find(this.parent[x]) }
-    return this.parent[x]
-  }
+    find(x) {
+        if (this.parent[x] !== x) { this.parent[x] = this.find(this.parent[x]) }
+        return this.parent[x]
+    }
 
-  union(x, y) {
-    x = this.find(x)
-    y = this.find(y)
-    if (x === y) { return }
-    if (this.size[x] < this.size[y]) { [x, y] = [y, x] }
-    this.parent[y] = x
-    this.size[x] += this.size[y]
-  }
+    union(x, y) {
+        x = this.find(x)
+        y = this.find(y)
+        if (x === y) { return }
+        if (this.size[x] < this.size[y]) { [x, y] = [y, x] }
+        this.parent[y] = x
+        this.size[x] += this.size[y]
+    }
 }
 
 export { regionsBySlashes }

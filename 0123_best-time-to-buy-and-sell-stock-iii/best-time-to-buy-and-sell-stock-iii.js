@@ -40,14 +40,14 @@
  * @return {number}
  */
 var maxProfit = function (prices) {
-  let dp00 = 0, dp01 = -Infinity, dp10 = 0, dp11 = -Infinity
-  for (let price of prices) {
-    dp00 = Math.max(dp00, dp01 + price)
-    dp01 = Math.max(dp01, dp10 - price)
-    dp10 = Math.max(dp10, dp11 + price)
-    dp11 = Math.max(dp11, -price)
-  }
-  return dp00
+    let dp00 = 0, dp01 = -Infinity, dp10 = 0, dp11 = -Infinity
+    for (let price of prices) {
+        dp00 = Math.max(dp00, dp01 + price)
+        dp01 = Math.max(dp01, dp10 - price)
+        dp10 = Math.max(dp10, dp11 + price)
+        dp11 = Math.max(dp11, -price)
+    }
+    return dp00
 }
 
 export { maxProfit }

@@ -31,11 +31,11 @@
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 var rotate = function (nums, k) {
-  let n = nums.length
-  k %= n
-  reverse(nums, 0, n - 1 - k)
-  reverse(nums, n - k, n - 1)
-  reverse(nums, 0, n - 1)
+    let n = nums.length
+    k %= n
+    reverse(nums, 0, n - 1 - k)
+    reverse(nums, n - k, n - 1)
+    reverse(nums, 0, n - 1)
 }
 
 /**
@@ -45,9 +45,9 @@ var rotate = function (nums, k) {
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 let reverse = (nums, l, r) => {
-  for (let i = 0; l + i < r - i; i++) {
-    [nums[l + i], nums[r - i]] = [nums[r - i], nums[l + i]]
-  }
+    for (let i = 0; l + i < r - i; i++) {
+        [nums[l + i], nums[r - i]] = [nums[r - i], nums[l + i]]
+    }
 }
 
 export { rotate }
