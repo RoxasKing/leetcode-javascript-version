@@ -20,14 +20,18 @@
 
   Constraints:
     1. 1 <= k <= nums.length <= 2000
-     2. ​​​​​0 <= nums[i] < 2^10
+    2. ​​​​​0 <= nums[i] < 2^10
 
   来源：力扣（LeetCode）
   链接：https://leetcode-cn.com/problems/make-the-xor-of-all-segments-equal-to-zero
   著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
 
-// Dynamic Programming + Greedy algorithm
+// Important!
+
+// Dynamic Programming
+// Greedy algorithm
+// Bit Manipulation
 
 /**
  * @param {number[]} nums
@@ -35,35 +39,30 @@
  * @return {number}
  */
 var minChanges = function (nums, k) {
-    let cnt = []
-    for (let i = 0; i < k; i++) { cnt.push(new Array(1 << 10).fill(0)) }
-    nums.forEach((num, i) => { cnt[i % k][num]++ })
+    let limit = 1 << 10
+    let freq = new Array(k)
+    for (let i = 0; i < k; i++) { freq[i] = new Array(limit).fill(0) }
+    nums.forEach((num, i) => { freq[i % k][num]++ })
 
-    let dp0 = []
-    let minCnt = 0
-    for (let j = 0; j < 1 << 10; j++) {
-        dp0.push(cnt[0][j])
-        minCnt = Math.max(minCnt, cnt[0][j])
-    }
-    let keep = minCnt
+    let maxFreq = 0, f0 = freq[0]
+    for (let j = 0; j < limit; j++) { maxFreq = Math.max(maxFreq, freq[0][j]) }
+    let keep = maxFreq, minFreq = maxFreq
 
     for (let i = 1; i < k; i++) {
-        let maxCnt = 0
-        let dp = new Array(1 << 10).fill(0)
-        for (let j = 0; j < 1 << 10; j++) {
-            if (cnt[i][j] === 0) { continue }
-            maxCnt = Math.max(maxCnt, cnt[i][j])
-            for (let k = 0; k < 1 << 10; k++) {
-                dp[j ^ k] = Math.max(dp[j ^ k], dp0[k] + cnt[i][j])
+        let maxFreq = 0, f1 = new Array(limit).fill(0)
+        for (let j = 0; j < limit; j++) {
+            if (freq[i][j] === 0) { continue }
+            maxFreq = Math.max(maxFreq, freq[i][j])
+            for (let x = 0; x < limit; x++) {
+                f1[j ^ x] = Math.max(f1[j ^ x], f0[x] + freq[i][j])
             }
         }
-        keep += maxCnt
-        minCnt = Math.min(minCnt, maxCnt)
-        dp0 = dp
+        keep += maxFreq
+        minFreq = Math.min(minFreq, maxFreq)
+        f0 = f1
     }
-    keep -= minCnt
 
-    return nums.length - Math.max(keep, dp0[0])
+    return nums.length - Math.max(keep - minFreq, f0[0])
 }
 
 export { minChanges }
